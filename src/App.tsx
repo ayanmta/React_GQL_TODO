@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import AddTodo from './components/AddTodo';
+import Todo from './components/Todo';
+import {GET_TODOS} from "./graphql";
+import { ITodo } from './type/Todo';
+import { useTodoQuery } from './useRequest';
 
-function App() {
+const App = () => {
+    const { loading, error, data } = useTodoQuery(GET_TODOS);
+    if (loading) return (<h1>Loading...</h1>);
+  if (error) return (<h1>Something went wrong!</h1>);
+  console.log("GQSFWGSF",data)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    <h1>MY TODO</h1>
+    <AddTodo/>
+    {data.getTodos.map((todo:ITodo)=><Todo key={todo.id} todo={todo}/>)}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
